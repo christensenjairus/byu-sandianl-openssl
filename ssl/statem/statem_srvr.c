@@ -706,6 +706,7 @@ WRITE_TRAN ossl_statem_server_write_transition(SSL_CONNECTION *s)
         return WRITE_TRAN_CONTINUE;
 
     case TLS_ST_SW_SRVR_DONE:
+	writefinished = ossl_time_now();
         return WRITE_TRAN_FINISHED;
 
     case TLS_ST_SR_FINISHED:
@@ -717,6 +718,20 @@ WRITE_TRAN ossl_statem_server_write_transition(SSL_CONNECTION *s)
         } else {
             st->hand_state = TLS_ST_SW_CHANGE;
         }
+
+	readfinished = ossl_time_now();
+	printf("-->WRITE Finished: %ld ticks\n", ossl_time2ticks(writefinished));
+	printf("-->READ Finished: %ld ticks\n", ossl_time2ticks(readfinished));
+	long ticks = ossl_time2ticks(ossl_time_abs_difference(readfinished, writefinished));
+	double milliseconds = (double)ticks/1000000.0;
+	printf("-->RTT: %li ticks, or %lf ms\n", ticks, milliseconds);
+	FILE* rttlogfile = fopen("/tmp/openssl_rtt.log", "a");
+	if(rttlogfile==NULL) perror("Can't open rtt log file");
+	else {
+		fprintf(rttlogfile, "RTT TIME: %lf milliseconds\n", milliseconds);
+		fclose(rttlogfile);
+	}
+
         return WRITE_TRAN_CONTINUE;
 
     case TLS_ST_SW_SESSION_TICKET:
