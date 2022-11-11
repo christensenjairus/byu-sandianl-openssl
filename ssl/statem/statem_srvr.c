@@ -30,6 +30,9 @@
 
 #define TICKET_NONCE_SIZE       8
 
+OSSL_TIME readfinished;
+OSSL_TIME writefinished;
+
 typedef struct {
   ASN1_TYPE *kxBlob;
   ASN1_TYPE *opaqueBlob;
@@ -535,6 +538,7 @@ static WRITE_TRAN ossl_statem_server13_write_transition(SSL_CONNECTION *s)
 
     case TLS_ST_SW_FINISHED:
         st->hand_state = TLS_ST_EARLY_DATA;
+	writefinished = ossl_time_now();
         return WRITE_TRAN_CONTINUE;
 
     case TLS_ST_EARLY_DATA:
@@ -560,6 +564,18 @@ static WRITE_TRAN ossl_statem_server13_write_transition(SSL_CONNECTION *s)
             st->hand_state = TLS_ST_SW_SESSION_TICKET;
         else
             st->hand_state = TLS_ST_OK;
+	readfinished = ossl_time_now();
+	printf("-->WRITE Finished: %ld ticks\n", ossl_time2ticks(writefinished));
+	printf("-->READ Finished: %ld ticks\n", ossl_time2ticks(readfinished));
+	long ticks = ossl_time2ticks(ossl_time_abs_difference(readfinished, writefinished));
+	double milliseconds = (double)ticks/1000000.0;
+	printf("-->RTT: %li ticks, or %lf ms\n", ticks, milliseconds);
+	FILE* rttlogfile = fopen("/tmp/openssl_rtt.log", "a");
+	if(rttlogfile==NULL) perror("Can't open rtt log file");
+	else {
+		fprintf(rttlogfile, "RTT TIME: %lf milliseconds\n", milliseconds);
+		fclose(rttlogfile);
+	}
         return WRITE_TRAN_CONTINUE;
 
     case TLS_ST_SR_KEY_UPDATE:
