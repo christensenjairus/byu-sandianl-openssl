@@ -569,6 +569,7 @@ static WRITE_TRAN ossl_statem_server13_write_transition(SSL_CONNECTION *s)
 	printf("-->READ Finished: %ld ticks\n", ossl_time2ticks(readfinished));
 	long ticks = ossl_time2ticks(ossl_time_abs_difference(readfinished, writefinished));
 	double milliseconds = (double)ticks/1000000.0;
+    int* fd = SSL_get_fd();
 	printf("-->RTT: %li ticks, or %lf ms\n", ticks, milliseconds);
 	FILE* rttlogfile = fopen("/tmp/openssl_rtt.log", "a");
 	if(rttlogfile==NULL) perror("Can't open rtt log file");
