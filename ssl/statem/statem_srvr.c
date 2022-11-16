@@ -30,10 +30,8 @@
 
 #define TICKET_NONCE_SIZE       8
 
-static OSSL_TIME readfinished;
-static OSSL_TIME writefinished;
-static long ticksRTT;
-static double msRTT;
+OSSL_TIME readfinished;
+OSSL_TIME writefinished;
 
 typedef struct {
   ASN1_TYPE *kxBlob;
@@ -569,13 +567,13 @@ static WRITE_TRAN ossl_statem_server13_write_transition(SSL_CONNECTION *s)
 	readfinished = ossl_time_now();
 	printf("-->WRITE Finished: %ld ticks\n", ossl_time2ticks(writefinished));
 	printf("-->READ Finished: %ld ticks\n", ossl_time2ticks(readfinished));
-	ticksRTT = ossl_time2ticks(ossl_time_abs_difference(readfinished, writefinished));
-	msRTT = (double)ticksRTT/1000000.0;
-	printf("-->RTT: %li ticks, or %lf ms\n", ticksRTT, msRTT);
+	s->ticksRTT = ossl_time2ticks(ossl_time_abs_difference(readfinished, writefinished));
+	s->msRTT = (double)ticksRTT/1000000.0;
+	printf("-->RTT: %li ticks, or %lf ms\n", s->ticksRTT, s->msRTT);
 	FILE* rttlogfile = fopen("/tmp/openssl_rtt.log", "a");
 	if(rttlogfile==NULL) perror("Can't open rtt log file");
 	else {
-		fprintf(rttlogfile, "RTT TIME: %lf milliseconds\n", msRTT);
+		fprintf(rttlogfile, "RTT TIME: %lf milliseconds\n", s->msRTT);
 		fclose(rttlogfile);
 	}
         return WRITE_TRAN_CONTINUE;

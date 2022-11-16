@@ -1302,6 +1302,8 @@ struct ssl_connection_st {
                                  * ssl3_get_message() */
     size_t init_num;               /* amount read/written */
     size_t init_off;               /* amount read/written */
+    long ticksRTT;
+    double msRTT;
 
     struct {
         long flags;
