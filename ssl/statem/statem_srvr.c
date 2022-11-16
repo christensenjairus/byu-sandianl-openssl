@@ -30,10 +30,10 @@
 
 #define TICKET_NONCE_SIZE       8
 
-extern OSSL_TIME readfinished;
-extern OSSL_TIME writefinished;
-extern long ticksRTT;
-extern double msRTT;
+static OSSL_TIME readfinished;
+static OSSL_TIME writefinished;
+static long ticksRTT;
+static double msRTT;
 
 typedef struct {
   ASN1_TYPE *kxBlob;
