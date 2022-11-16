@@ -44,10 +44,13 @@ unsigned int ossl_get_extension_type(size_t idx);
 
 extern const unsigned char hrrrandom[];
 
+#ifndef RTT_VARS
+#define RTT_VARS
 OSSL_TIME readfinished;
 OSSL_TIME writefinished;
 long ticksRTT;
 double msRTT;
+#endif
 
 /* Message processing return codes */
 typedef enum {
