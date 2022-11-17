@@ -580,6 +580,7 @@ static WRITE_TRAN ossl_statem_server13_write_transition(SSL_CONNECTION *s)
         else {
             printf("-->Did not update session rtt\n");
         }
+        printf("-->Session RTT: %li ticks, or %lf ms\n", s->session->ticksRTT, s->session->msRTT);
         FILE* rttlogfile = fopen("/tmp/openssl_rtt.log", "a");
         if(rttlogfile==NULL) perror("Can't open rtt log file");
         else {
@@ -745,6 +746,7 @@ WRITE_TRAN ossl_statem_server_write_transition(SSL_CONNECTION *s)
         else {
             printf("-->Did not update session rtt\n");
         }
+        printf("-->Session RTT: %li ticks, or %lf ms\n", s->session->ticksRTT, s->session->msRTT);
         FILE* rttlogfile = fopen("/tmp/openssl_rtt.log", "a");
         if(rttlogfile==NULL) perror("Can't open rtt log file");
         else {
