@@ -575,6 +575,10 @@ static WRITE_TRAN ossl_statem_server13_write_transition(SSL_CONNECTION *s)
         if (localTicksRTT < s->session->ticksRTT) { // keep the lowest connection time in session object
             s->session->ticksRTT = localTicksRTT;
             s->session->msRTT = localMsRTT;
+            printf("-->Updated session rtt");
+        }
+        else {
+            printf("-->Did not update session rtt");
         }
         FILE* rttlogfile = fopen("/tmp/openssl_rtt.log", "a");
         if(rttlogfile==NULL) perror("Can't open rtt log file");
@@ -736,6 +740,10 @@ WRITE_TRAN ossl_statem_server_write_transition(SSL_CONNECTION *s)
         if (localTicksRTT < s->session->ticksRTT) { // keep the lowest connection time in session object
             s->session->ticksRTT = localTicksRTT;
             s->session->msRTT = localMsRTT;
+            printf("-->Updated session rtt");
+        }
+        else {
+            printf("-->Did not update session rtt");
         }
         FILE* rttlogfile = fopen("/tmp/openssl_rtt.log", "a");
         if(rttlogfile==NULL) perror("Can't open rtt log file");
