@@ -572,18 +572,18 @@ static WRITE_TRAN ossl_statem_server13_write_transition(SSL_CONNECTION *s)
         long localTicksRTT = ossl_time2ticks(ossl_time_abs_difference(readfinished, writefinished));
         double localMsRTT = (double)localTicksRTT/1000000.0;
         printf("-->RTT: %li ticks, or %lf ms\n", localTicksRTT, localMsRTT);
-        if (localTicksRTT < s->session->ticksRTT) { // keep the lowest connection time in session object
+        if (s->session->ticksRTT == NULL || s->session->ticksRTT == 0 || localTicksRTT < s->session->ticksRTT) { // keep the lowest connection time in session object
             s->session->ticksRTT = localTicksRTT;
             s->session->msRTT = localMsRTT;
-            printf("-->Updated session rtt");
+            printf("-->Updated session rtt\n");
         }
         else {
-            printf("-->Did not update session rtt");
+            printf("-->Did not update session rtt\n");
         }
         FILE* rttlogfile = fopen("/tmp/openssl_rtt.log", "a");
         if(rttlogfile==NULL) perror("Can't open rtt log file");
         else {
-            fprintf(rttlogfile, "RTT TIME for CONNECTION: %lf milliseconds. RTT TIME for SESSION: %lf milliseconds.\n", localMsRTT, s->session->msRTT);
+            fprintf(rttlogfile, "RTT TIME for CONNECTION: %lf milliseconds. \nRTT TIME for SESSION: %lf milliseconds.\n", localMsRTT, s->session->msRTT);
             fclose(rttlogfile);
         }
 
@@ -737,18 +737,18 @@ WRITE_TRAN ossl_statem_server_write_transition(SSL_CONNECTION *s)
         long localTicksRTT = ossl_time2ticks(ossl_time_abs_difference(readfinished, writefinished));
         double localMsRTT = (double)localTicksRTT/1000000.0;
         printf("-->RTT: %li ticks, or %lf ms\n", localTicksRTT, localMsRTT);
-        if (localTicksRTT < s->session->ticksRTT) { // keep the lowest connection time in session object
+        if (s->session->ticksRTT == NULL || s->session->ticksRTT == 0 || localTicksRTT < s->session->ticksRTT) { // keep the lowest connection time in session object
             s->session->ticksRTT = localTicksRTT;
             s->session->msRTT = localMsRTT;
-            printf("-->Updated session rtt");
+            printf("-->Updated session rtt\n");
         }
         else {
-            printf("-->Did not update session rtt");
+            printf("-->Did not update session rtt\n");
         }
         FILE* rttlogfile = fopen("/tmp/openssl_rtt.log", "a");
         if(rttlogfile==NULL) perror("Can't open rtt log file");
         else {
-            fprintf(rttlogfile, "RTT TIME for CONNECTION: %lf milliseconds. RTT TIME for SESSION: %lf milliseconds.\n", localMsRTT, s->session->msRTT);
+            fprintf(rttlogfile, "RTT TIME for CONNECTION: %lf milliseconds. \nRTT TIME for SESSION: %lf milliseconds.\n", localMsRTT, s->session->msRTT);
             fclose(rttlogfile);
         }
 
