@@ -916,13 +916,11 @@ long SSL_SESSION_get_time(const SSL_SESSION *s)
     return (long)ossl_time_to_time_t(s->time);
 }
 
-long SSL_SESSION_get_rtt(const SSL_SESSION *s)
+double SSL_SESSION_get_rtt(const SSL_SESSION *s)
 {
     if (s == NULL)
         return 0;
-    return (long) s->ticksRTT;
-                                               // TODO: need to find how to set session rtt time to MIN time of rtt connections
-                                               // TODO: find the relationship between SSL_SESSION and SSL_CONNECTION
+    return (double) s->msRTT;
 }
 
 long SSL_SESSION_set_time(SSL_SESSION *s, long t)
