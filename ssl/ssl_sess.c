@@ -923,7 +923,7 @@ long SSL_SESSION_get_rtt(const SSL_SESSION *s)
     SSL_CONNECTION *sc = SSL_CONNECTION_FROM_SSL(s);
     if (sc == NULL)
         return 0;
-    return (long)ossl_time_to_time_t(sc->msRTT);
+    return (long) sc->ticksRTT;
                                                // TODO: need to find how to set session rtt time to MIN time of rtt connections
                                                // TODO: find the relationship between SSL_SESSION and SSL_CONNECTION
 }
