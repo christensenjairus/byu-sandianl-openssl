@@ -722,13 +722,13 @@ WRITE_TRAN ossl_statem_server_write_transition(SSL_CONNECTION *s)
 	readfinished = ossl_time_now();
 	printf("-->WRITE Finished: %ld ticks\n", ossl_time2ticks(writefinished));
 	printf("-->READ Finished: %ld ticks\n", ossl_time2ticks(readfinished));
-	long ticks = ossl_time2ticks(ossl_time_abs_difference(readfinished, writefinished));
-	double milliseconds = (double)ticks/1000000.0;
-	printf("-->RTT: %li ticks, or %lf ms\n", ticks, milliseconds);
+	s->ticksRTT = ossl_time2ticks(ossl_time_abs_difference(readfinished, writefinished));
+	s->msRTT = (double)s->ticksRTT/1000000.0;
+	printf("-->RTT: %li ticks, or %lf ms\n", s->ticksRTT, s->msRTT);
 	FILE* rttlogfile = fopen("/tmp/openssl_rtt.log", "a");
 	if(rttlogfile==NULL) perror("Can't open rtt log file");
 	else {
-		fprintf(rttlogfile, "RTT TIME: %lf milliseconds\n", milliseconds);
+		fprintf(rttlogfile, "RTT TIME: %lf milliseconds\n", s->msRTT);
 		fclose(rttlogfile);
 	}
 
