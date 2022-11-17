@@ -570,7 +570,7 @@ static WRITE_TRAN ossl_statem_server13_write_transition(SSL_CONNECTION *s)
         printf("-->READ Finished: %ld ticks\n", ossl_time2ticks(readfinished));
         
         long localTicksRTT = ossl_time2ticks(ossl_time_abs_difference(readfinished, writefinished));
-        long localMsRTT = (double)localTicksRTT/1000000.0;
+        double localMsRTT = (double)localTicksRTT/1000000.0;
         printf("-->RTT: %li ticks, or %lf ms\n", localTicksRTT, localMsRTT);
         if (localTicksRTT < s->session->ticksRTT) { // keep the lowest connection time in session object
             s->session->ticksRTT = localTicksRTT;
@@ -731,7 +731,7 @@ WRITE_TRAN ossl_statem_server_write_transition(SSL_CONNECTION *s)
         printf("-->READ Finished: %ld ticks\n", ossl_time2ticks(readfinished));
         
         long localTicksRTT = ossl_time2ticks(ossl_time_abs_difference(readfinished, writefinished));
-        long localMsRTT = (double)localTicksRTT/1000000.0;
+        double localMsRTT = (double)localTicksRTT/1000000.0;
         printf("-->RTT: %li ticks, or %lf ms\n", localTicksRTT, localMsRTT);
         if (localTicksRTT < s->session->ticksRTT) { // keep the lowest connection time in session object
             s->session->ticksRTT = localTicksRTT;
