@@ -572,11 +572,11 @@ static WRITE_TRAN ossl_statem_server13_write_transition(SSL_CONNECTION *s)
         s->session->ticksRTT = ossl_time2ticks(ossl_time_abs_difference(readfinished, writefinished));
         s->session->msRTT = (double)s->session->ticksRTT/1000000.0;
         
-        printf("-->Session RTT: %li ticks, or %lf ms\n", s->session->ticksRTT, s->session->msRTT);
+        printf("-->SSL Session RTT: %li ticks, or %lf ms\n", s->session->ticksRTT, s->session->msRTT);
         FILE* rttlogfile = fopen("/tmp/openssl_rtt.log", "a");
         if(rttlogfile==NULL) perror("Can't open rtt log file");
         else {
-            fprintf(rttlogfile, "RTT TIME for SESSION: %lf milliseconds.\n", s->session->msRTT);
+            fprintf(rttlogfile, "SSL Session RTT Time: %lf milliseconds.\n", s->session->msRTT);
             fclose(rttlogfile);
         }
 
@@ -730,11 +730,11 @@ WRITE_TRAN ossl_statem_server_write_transition(SSL_CONNECTION *s)
         s->session->ticksRTT = ossl_time2ticks(ossl_time_abs_difference(readfinished, writefinished));
         s->session->msRTT = (double)s->session->ticksRTT/1000000.0;
         
-        printf("-->Session RTT: %li ticks, or %lf ms\n", s->session->ticksRTT, s->session->msRTT);
+        printf("-->SSL Session RTT: %li ticks, or %lf ms\n", s->session->ticksRTT, s->session->msRTT);
         FILE* rttlogfile = fopen("/tmp/openssl_rtt.log", "a");
         if(rttlogfile==NULL) perror("Can't open rtt log file");
         else {
-            fprintf(rttlogfile, "RTT TIME for SESSION: %lf milliseconds.\n", s->session->msRTT);
+            fprintf(rttlogfile, "SSL Session RTT Time: %lf milliseconds.\n", s->session->msRTT);
             fclose(rttlogfile);
         }
 
