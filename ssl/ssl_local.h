@@ -612,6 +612,7 @@ struct ssl_session_st {
     CRYPTO_REF_COUNT references;
     OSSL_TIME timeout;
     OSSL_TIME time;
+    OSSL_TIME rtt;
     OSSL_TIME calc_timeout;
     unsigned int compress_meth; /* Need to lookup the method */
     const SSL_CIPHER *cipher;
@@ -654,8 +655,6 @@ struct ssl_session_st {
     uint32_t flags;
     SSL_CTX *owner;
     CRYPTO_RWLOCK *lock;
-    long ticksRTT;
-    double msRTT;
 };
 
 /* Extended master secret support */

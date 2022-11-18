@@ -916,11 +916,11 @@ long SSL_SESSION_get_time(const SSL_SESSION *s)
     return (long)ossl_time_to_time_t(s->time);
 }
 
-double SSL_SESSION_get_rtt(const SSL_SESSION *s)
+long SSL_SESSION_get_rtt(const SSL_SESSION *s)
 {
     if (s == NULL)
         return 0;
-    return (double) s->msRTT;
+    return (long)ossl_time_to_time_t(s->rtt);
 }
 
 long SSL_SESSION_set_time(SSL_SESSION *s, long t)
