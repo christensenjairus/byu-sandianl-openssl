@@ -728,11 +728,11 @@ WRITE_TRAN ossl_statem_server_write_transition(SSL_CONNECTION *s)
         
         s->session->rtt = ossl_time_abs_difference(readfinished, writefinished); // saved as OSSL_TIME in ticks or nanoseconds
         
-        printf("-->SSL Session RTT: %li nanoseconds\n", ossl_time2ticks(s->session->rtt));
+        printf("-->SSL RTT: %li nanoseconds\n", ossl_time2ticks(s->session->rtt));
         FILE* rttlogfile = fopen("/tmp/openssl_rtt.log", "a");
         if(rttlogfile==NULL) perror("Can't open rtt log file");
         else {
-            fprintf(rttlogfile, "SSL Session RTT Time: %li nanoseconds\n", ossl_time2ticks(s->session->rtt));
+            fprintf(rttlogfile, "SSL RTT: %li nanoseconds\n", ossl_time2ticks(s->session->rtt));
             fclose(rttlogfile);
         }
 
