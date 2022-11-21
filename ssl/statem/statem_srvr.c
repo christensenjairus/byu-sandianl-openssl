@@ -575,7 +575,7 @@ static WRITE_TRAN ossl_statem_server13_write_transition(SSL_CONNECTION *s)
         FILE* rttlogfile = fopen("/tmp/openssl_rtt.log", "a");
         if(rttlogfile==NULL) perror("Can't open rtt log file");
         else {
-            fprintf(rttlogfile, "SSL RTT: %li ticks\n", ossl_time2ticks(s->session->rtt));
+            fprintf(rttlogfile, "SSL RTT: %li ticks or %li\n", ossl_time2ticks(s->session->rtt), ossl_time2ms(s->session->rtt));
             fclose(rttlogfile);
         }
 
@@ -732,7 +732,7 @@ WRITE_TRAN ossl_statem_server_write_transition(SSL_CONNECTION *s)
         FILE* rttlogfile = fopen("/tmp/openssl_rtt.log", "a");
         if(rttlogfile==NULL) perror("Can't open rtt log file");
         else {
-            fprintf(rttlogfile, "SSL RTT: %li ticks\n", ossl_time2ticks(s->session->rtt));
+            fprintf(rttlogfile, "SSL RTT: %li ticks or %li\n", ossl_time2ticks(s->session->rtt), ossl_time2ms(s->session->rtt));
             fclose(rttlogfile);
         }
 
