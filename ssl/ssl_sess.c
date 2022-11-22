@@ -923,7 +923,7 @@ int SSL_SESSION_get_rtt(const SSL_SESSION *s, u_char *rtt) // might have to retu
     else if (rtt == NULL)
         return 0;
     //*rtt = ossl_time2ticks(s->rtt);
-    sprintf(rtt, "%llu", ossl_time2ticks(s->rtt)); // write ulong long to string
+    sprintf(rtt, "%" PRIu64 "", ossl_time2ticks(s->rtt)); // write ulong long to string
     return 1;
 }
 
