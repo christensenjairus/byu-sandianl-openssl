@@ -921,7 +921,7 @@ const char *SSL_SESSION_get_rtt(const SSL_SESSION *s) // might have to return a 
     if (s == NULL)
         return 0;
     char str[256];
-    sprintf(str, "%lld", ossl_time2ticks(s->rtt));
+    sprintf(str, "%lu", ossl_time2ticks(s->rtt));
     return str; 
 }
 
