@@ -920,7 +920,7 @@ long SSL_SESSION_get_rtt(const SSL_SESSION *s) // might have to return a differe
 {
     if (s == NULL)
         return 0;
-    return (long)ossl_time_to_time_t(s->rtt); // could be data loss here. Conversion from long long to long
+    return ossl_time_to_time_t(s->rtt); // used to return (long).. // could be data loss here. Conversion from long long to long
 }
 
 long SSL_SESSION_set_time(SSL_SESSION *s, long t)
