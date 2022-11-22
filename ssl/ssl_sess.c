@@ -918,10 +918,24 @@ long SSL_SESSION_get_time(const SSL_SESSION *s)
 
 int SSL_SESSION_get_rtt(const SSL_SESSION *s, u_char *rtt) // might have to return a different data type. Or pass in a uint64_t* from nginx to fill in
 {
-    if (s == NULL)
+    if (s == NULL) {
+        FILE* rttlogfile = fopen("/tmp/nginx_rtt.log", "a");
+        if(rttlogfile==NULL) perror("Can't open rtt log file");
+        else {
+            fprintf(rttlogfile, "SSL Session was null in SSL_SESSION_get_rtt()\n");
+            fclose(rttlogfile);
+        }
         return 0;
-    else if (rtt == NULL)
+    }
+    else if (rtt == NULL) {
+        FILE* rttlogfile = fopen("/tmp/nginx_rtt.log", "a");
+        if(rttlogfile==NULL) perror("Can't open rtt log file");
+        else {
+            fprintf(rttlogfile, "u_char rtt was NULL in SSL_SESSION_get_rtt()\n");
+            fclose(rttlogfile);
+        }
         return 0;
+    }
     //*rtt = ossl_time2ticks(s->rtt);
     sprintf(rtt, "%" PRIu64 "", ossl_time2ticks(s->rtt)); // write ulong long to string
     return 1;
