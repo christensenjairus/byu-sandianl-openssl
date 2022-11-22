@@ -916,12 +916,13 @@ long SSL_SESSION_get_time(const SSL_SESSION *s)
     return (long)ossl_time_to_time_t(s->time);
 }
 
-long SSL_SESSION_get_rtt(const SSL_SESSION *s) // might have to return a different data type. Or pass in a uint64_t* from nginx to fill in
+const char *SSL_SESSION_get_rtt(const SSL_SESSION *s) // might have to return a different data type. Or pass in a uint64_t* from nginx to fill in
 {
     if (s == NULL)
         return 0;
-    
-    return (long) ossl_time2ms(s->rtt); // could be data loss here. Conversion from long long to long
+    char str[256];
+    sprintf(str, "%lld", ossl_time2ticks(s->rtt));
+    return str; 
 }
 
 long SSL_SESSION_set_time(SSL_SESSION *s, long t)
