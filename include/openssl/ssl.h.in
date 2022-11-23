@@ -1675,7 +1675,7 @@ __owur const char *SSL_state_string(const SSL *s);
 __owur const char *SSL_rstate_string(const SSL *s);
 __owur const char *SSL_state_string_long(const SSL *s);
 __owur const char *SSL_rstate_string_long(const SSL *s);
-__owur int SSL_SESSION_get_rtt(const SSL_SESSION *s, u_char *data, size_t len);
+__owur int SSL_SESSION_get_rtt(const SSL_SESSION *s, u_char *rtt);
 __owur long SSL_SESSION_get_time(const SSL_SESSION *s);
 __owur long SSL_SESSION_set_time(SSL_SESSION *s, long t);
 __owur long SSL_SESSION_get_timeout(const SSL_SESSION *s);
