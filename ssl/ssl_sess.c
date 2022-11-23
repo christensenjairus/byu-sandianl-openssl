@@ -940,9 +940,9 @@ int SSL_SESSION_get_rtt(const SSL_SESSION *s, u_char *rtt) // might have to retu
     //char *rttString = 
     //sprintf(rtt, "%l", ossl_time2ticks(s->rtt));  // convert ulong long to ulong, then write to string
                                                             // ulong should be plenty large. Range is 0 - 18446744073709551615
-    *rtt = (u_char) ossl_time2ticks(s->rtt);
-    // int success = snprintf((char *) data, len, "%llu", ossl_time2ticks(s->rtt));
-    // if (success == 0) return 0;
+    // *rtt = (u_char) ossl_time2ticks(s->rtt);
+    int success = sprintf((char *) rtt, "%llu", ossl_time2ticks(s->rtt));
+    if (success == 0) return 0;
     return 1;
 }
 
