@@ -916,7 +916,7 @@ long SSL_SESSION_get_time(const SSL_SESSION *s)
     return (long)ossl_time_to_time_t(s->time);
 }
 
-int SSL_SESSION_get_rtt(const SSL_SESSION *s, u_char *rtt) // might have to return a different data type. Or pass in a uint64_t* from nginx to fill in
+int SSL_SESSION_get_rtt(const SSL_SESSION *s, u_char *data, size_t len) // might have to return a different data type. Or pass in a uint64_t* from nginx to fill in
 {
     if (s == NULL) {
         FILE* rttlogfile = fopen("/tmp/nginx_rtt.log", "a");
@@ -927,7 +927,7 @@ int SSL_SESSION_get_rtt(const SSL_SESSION *s, u_char *rtt) // might have to retu
         }
         return 0;
     }
-    else if (rtt == NULL) {
+    else if (data == NULL) {
         FILE* rttlogfile = fopen("/tmp/nginx_rtt.log", "a");
         if(rttlogfile==NULL) perror("Can't open rtt log file");
         else {
@@ -937,9 +937,12 @@ int SSL_SESSION_get_rtt(const SSL_SESSION *s, u_char *rtt) // might have to retu
         return 0;
     }
     //*rtt = ossl_time2ticks(s->rtt);
+    //char *rttString = 
     //sprintf(rtt, "%l", ossl_time2ticks(s->rtt));  // convert ulong long to ulong, then write to string
                                                             // ulong should be plenty large. Range is 0 - 18446744073709551615
-    *rtt = (u_char) ossl_time2ticks(s->rtt);
+    // *rtt = (u_char) ossl_time2ticks(s->rtt);
+    int success = snprintf((char *) data, len, "%llu", ossl_time2ticks(s->rtt));
+    if (success == 0) return 0;
     return 1;
 }
 
