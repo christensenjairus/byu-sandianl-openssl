@@ -58,6 +58,9 @@ int PREFIX##_set0##_##NAME(OSSL_CMP_CTX *ctx, TYPE *val) \
  */
 DEFINE_OSSL_set0_NAME(OSSL_CMP_CTX, trusted, trusted, X509_STORE)
 
+DEFINE_OSSL_CMP_CTX_get0(libctx, OSSL_LIB_CTX)
+DEFINE_OSSL_CMP_CTX_get0(propq, const char)
+
 /* Get current list of non-trusted intermediate certs */
 DEFINE_OSSL_CMP_CTX_get0(untrusted, STACK_OF(X509))
 
@@ -115,7 +118,7 @@ OSSL_CMP_CTX *OSSL_CMP_CTX_new(OSSL_LIB_CTX *libctx, const char *propq)
 
     ctx->log_verbosity = OSSL_CMP_LOG_INFO;
 
-    ctx->status = -1;
+    ctx->status = OSSL_CMP_PKISTATUS_unspecified;
     ctx->failInfoCode = -1;
 
     ctx->keep_alive = 1;
@@ -158,7 +161,7 @@ int OSSL_CMP_CTX_reinit(OSSL_CMP_CTX *ctx)
         ossl_cmp_debug(ctx, "disconnected from CMP server");
         ctx->http_ctx = NULL;
     }
-    ctx->status = -1;
+    ctx->status = OSSL_CMP_PKISTATUS_unspecified;
     ctx->failInfoCode = -1;
 
     return ossl_cmp_ctx_set0_statusString(ctx, NULL)
