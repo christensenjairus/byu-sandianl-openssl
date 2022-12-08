@@ -242,7 +242,9 @@ CMP_R_MISSING_PBM_SECRET:166:missing pbm secret
 CMP_R_MISSING_PRIVATE_KEY:131:missing private key
 CMP_R_MISSING_PROTECTION:143:missing protection
 CMP_R_MISSING_REFERENCE_CERT:168:missing reference cert
+CMP_R_MISSING_SECRET:178:missing secret
 CMP_R_MISSING_SENDER_IDENTIFICATION:111:missing sender identification
+CMP_R_MISSING_TRUST_ANCHOR:179:missing trust anchor
 CMP_R_MISSING_TRUST_STORE:144:missing trust store
 CMP_R_MULTIPLE_REQUESTS_NOT_SUPPORTED:161:multiple requests not supported
 CMP_R_MULTIPLE_RESPONSES_NOT_SUPPORTED:170:multiple responses not supported
@@ -1020,6 +1022,7 @@ PROV_R_ILLEGAL_OR_UNSUPPORTED_PADDING_MODE:165:\
 PROV_R_INDICATOR_INTEGRITY_FAILURE:210:indicator integrity failure
 PROV_R_INSUFFICIENT_DRBG_STRENGTH:181:insufficient drbg strength
 PROV_R_INVALID_AAD:108:invalid aad
+PROV_R_INVALID_AEAD:231:invalid aead
 PROV_R_INVALID_CONFIG_DATA:211:invalid config data
 PROV_R_INVALID_CONSTANT_LENGTH:157:invalid constant length
 PROV_R_INVALID_CURVE:176:invalid curve
@@ -1031,6 +1034,7 @@ PROV_R_INVALID_DIGEST_SIZE:218:invalid digest size
 PROV_R_INVALID_INPUT_LENGTH:230:invalid input length
 PROV_R_INVALID_ITERATION_COUNT:123:invalid iteration count
 PROV_R_INVALID_IV_LENGTH:109:invalid iv length
+PROV_R_INVALID_KDF:232:invalid kdf
 PROV_R_INVALID_KEY:158:invalid key
 PROV_R_INVALID_KEY_LENGTH:105:invalid key length
 PROV_R_INVALID_MAC:151:invalid mac
