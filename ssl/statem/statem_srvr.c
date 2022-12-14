@@ -712,7 +712,7 @@ WRITE_TRAN ossl_statem_server_write_transition(SSL_CONNECTION *s)
         }
 
         readfinished = ossl_time_now();
-        s->session->rtt = ossl_time_abs_difference(readfinished, writefinished); // saved as OSSL_TIME in ticks or 100 nanoseconds or 1/10millionth of a second
+        s->session->rtt = ossl_time_abs_difference(readfinished, writefinished);
 
         return WRITE_TRAN_CONTINUE;
 
