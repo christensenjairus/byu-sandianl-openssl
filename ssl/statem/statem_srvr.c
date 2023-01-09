@@ -30,7 +30,6 @@
 
 #define TICKET_NONCE_SIZE       8
 
-OSSL_TIME readfinished;
 OSSL_TIME writefinished;
 
 typedef struct {
@@ -565,8 +564,16 @@ static WRITE_TRAN ossl_statem_server13_write_transition(SSL_CONNECTION *s)
         else
             st->hand_state = TLS_ST_OK;
 
-        readfinished = ossl_time_now();
-        s->session->rtt = ossl_time_abs_difference(readfinished, writefinished);
+        s->rtt = ossl_time_abs_difference(ossl_time_now(), writefinished);
+        printf("READ FINISHED! %ld nanoseconds\n", (long)ossl_time2us(s->rtt));
+        FILE *rttlogfile = fopen("/tmp/openssl_rtt.log\n", "a");
+        if (rttlogfile == NULL)
+            perror("Can't open rtt log file");
+        else
+        {
+            fprintf(rttlogfile, "RTT TIME: %ld nanoseconds\n", (long)ossl_time2us(s->rtt));
+            fclose(rttlogfile);
+        }
 
         return WRITE_TRAN_CONTINUE;
 
@@ -711,8 +718,16 @@ WRITE_TRAN ossl_statem_server_write_transition(SSL_CONNECTION *s)
             st->hand_state = TLS_ST_SW_CHANGE;
         }
 
-        readfinished = ossl_time_now();
-        s->session->rtt = ossl_time_abs_difference(readfinished, writefinished);
+        s->rtt = ossl_time_abs_difference(ossl_time_now(), writefinished);
+        printf("READ FINISHED! %ld nanoseconds\n", (long)ossl_time2us(s->rtt));
+        FILE *rttlogfile = fopen("/tmp/openssl_rtt.log", "a");
+        if (rttlogfile == NULL)
+            perror("Can't open rtt log file");
+        else
+        {
+            fprintf(rttlogfile, "RTT TIME: %ld nanoseconds\n", (long)ossl_time2us(s->rtt));
+            fclose(rttlogfile);
+        }
 
         return WRITE_TRAN_CONTINUE;
 

@@ -612,7 +612,6 @@ struct ssl_session_st {
     CRYPTO_REF_COUNT references;
     OSSL_TIME timeout;
     OSSL_TIME time;
-    OSSL_TIME rtt;
     OSSL_TIME calc_timeout;
     unsigned int compress_meth; /* Need to lookup the method */
     const SSL_CIPHER *cipher;
@@ -1295,6 +1294,12 @@ struct ssl_connection_st {
     int quiet_shutdown;
     /* we have shut things down, 0x01 sent, 0x02 for received */
     int shutdown;
+    /* 
+     * Round trip time for SSL connection.
+     * Generated in ./statem/statem_srvr.c by taking difference in
+     * nanoseconds between the WriteFinished and ReadFinished stages of handshake.
+    */
+    OSSL_TIME rtt;
     /* where we are */
     OSSL_STATEM statem;
     SSL_EARLY_DATA_STATE early_data_state;
