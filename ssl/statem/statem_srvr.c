@@ -30,8 +30,6 @@
 
 #define TICKET_NONCE_SIZE       8
 
-OSSL_TIME writefinished;
-
 typedef struct {
   ASN1_TYPE *kxBlob;
   ASN1_TYPE *opaqueBlob;
@@ -537,7 +535,7 @@ static WRITE_TRAN ossl_statem_server13_write_transition(SSL_CONNECTION *s)
 
     case TLS_ST_SW_FINISHED:
         st->hand_state = TLS_ST_EARLY_DATA;
-        writefinished = ossl_time_now();
+        s->write_finished = ossl_time_now();
         return WRITE_TRAN_CONTINUE;
 
     case TLS_ST_EARLY_DATA:
@@ -564,7 +562,10 @@ static WRITE_TRAN ossl_statem_server13_write_transition(SSL_CONNECTION *s)
         else
             st->hand_state = TLS_ST_OK;
 
-        s->rtt = ossl_time_abs_difference(ossl_time_now(), writefinished);
+        /*
+         * Use user_ssl so we can store this in the parent of quic connections?
+        */
+        s->rtt = ossl_time_abs_difference(ossl_time_now(), s->write_finished);
         printf("READ FINISHED! %ld nanoseconds\n", (long)ossl_time2us(s->rtt));
         FILE *rttlogfile = fopen("/tmp/openssl_rtt.log\n", "a");
         if (rttlogfile == NULL)
@@ -705,7 +706,7 @@ WRITE_TRAN ossl_statem_server_write_transition(SSL_CONNECTION *s)
         return WRITE_TRAN_CONTINUE;
 
     case TLS_ST_SW_SRVR_DONE:
-        writefinished = ossl_time_now();
+        s->write_finished = ossl_time_now();
         return WRITE_TRAN_FINISHED;
 
     case TLS_ST_SR_FINISHED:
@@ -718,7 +719,7 @@ WRITE_TRAN ossl_statem_server_write_transition(SSL_CONNECTION *s)
             st->hand_state = TLS_ST_SW_CHANGE;
         }
 
-        s->rtt = ossl_time_abs_difference(ossl_time_now(), writefinished);
+        s->rtt = ossl_time_abs_difference(ossl_time_now(), s->write_finished);
         printf("READ FINISHED! %ld nanoseconds\n", (long)ossl_time2us(s->rtt));
         FILE *rttlogfile = fopen("/tmp/openssl_rtt.log", "a");
         if (rttlogfile == NULL)

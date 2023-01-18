@@ -1294,6 +1294,11 @@ struct ssl_connection_st {
     int quiet_shutdown;
     /* we have shut things down, 0x01 sent, 0x02 for received */
     int shutdown;
+    /*
+     * When the write_finished stage of the handshake has ended.
+     * Used to calculate the connection rtt.
+    */
+    OSSL_TIME write_finished;
     /* 
      * Round trip time for SSL connection.
      * Generated in ./statem/statem_srvr.c by taking difference in
