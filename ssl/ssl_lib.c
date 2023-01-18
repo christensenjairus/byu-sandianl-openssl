@@ -4572,6 +4572,10 @@ const char *SSL_get_version(const SSL *s)
     return ssl_protocol_to_string(sc->version);
 }
 
+/*
+ * SSL_get_rtt retrieves the RTT value for a connection in microsoconds
+ * These units NGINX's $tcpinfo_rtt variable (available through SSL module)
+*/
 __owur long SSL_get_rtt(const SSL *s)
 {
     const SSL_CONNECTION *sc = SSL_CONNECTION_FROM_CONST_SSL(s);
