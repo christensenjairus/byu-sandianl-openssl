@@ -566,13 +566,13 @@ static WRITE_TRAN ossl_statem_server13_write_transition(SSL_CONNECTION *s)
          * Use user_ssl so we can store this in the parent of quic connections?
         */
         s->rtt = ossl_time_abs_difference(ossl_time_now(), s->write_finished);
-        printf("READ FINISHED! %ld nanoseconds\n", (long)ossl_time2us(s->rtt));
+        printf("READ FINISHED! %ld microseconds\n", (long)ossl_time2us(s->rtt));
         FILE *rttlogfile = fopen("/tmp/openssl_rtt.log\n", "a");
         if (rttlogfile == NULL)
             perror("Can't open rtt log file");
         else
         {
-            fprintf(rttlogfile, "RTT TIME: %ld nanoseconds\n", (long)ossl_time2us(s->rtt));
+            fprintf(rttlogfile, "RTT TIME: %ld microseconds\n", (long)ossl_time2us(s->rtt));
             fclose(rttlogfile);
         }
 
@@ -720,13 +720,13 @@ WRITE_TRAN ossl_statem_server_write_transition(SSL_CONNECTION *s)
         }
 
         s->rtt = ossl_time_abs_difference(ossl_time_now(), s->write_finished);
-        printf("READ FINISHED! %ld nanoseconds\n", (long)ossl_time2us(s->rtt));
+        printf("READ FINISHED! %ld microseconds\n", (long)ossl_time2us(s->rtt));
         FILE *rttlogfile = fopen("/tmp/openssl_rtt.log", "a");
         if (rttlogfile == NULL)
             perror("Can't open rtt log file");
         else
         {
-            fprintf(rttlogfile, "RTT TIME: %ld nanoseconds\n", (long)ossl_time2us(s->rtt));
+            fprintf(rttlogfile, "RTT TIME: %ld microseconds\n", (long)ossl_time2us(s->rtt));
             fclose(rttlogfile);
         }
 
