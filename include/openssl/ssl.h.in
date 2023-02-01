@@ -1939,7 +1939,7 @@ __owur int SSL_get_early_data_status(const SSL *s);
 
 __owur int SSL_get_error(const SSL *s, int ret_code);
 __owur const char *SSL_get_version(const SSL *s);
-__owur long SSL_get_rtt(const SSL *s);
+__owur uint64_t SSL_get_handshake_rtt(const SSL *s);
 
 /* This sets the 'default' SSL version that SSL_new() will create */
 # ifndef OPENSSL_NO_DEPRECATED_3_0

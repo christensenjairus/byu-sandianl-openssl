@@ -532,4 +532,4 @@ SSL_CTX_set1_compressed_cert            ?	3_2_0	EXIST::FUNCTION:
 SSL_set1_compressed_cert                ?	3_2_0	EXIST::FUNCTION:
 SSL_CTX_get1_compressed_cert            ?	3_2_0	EXIST::FUNCTION:
 SSL_get1_compressed_cert                ?	3_2_0	EXIST::FUNCTION:
-SSL_get_rtt                             ?	3_2_0	EXIST::FUNCTION:
+SSL_get_handshake_rtt                   ?	3_2_0	EXIST::FUNCTION:

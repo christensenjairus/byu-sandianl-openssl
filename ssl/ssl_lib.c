@@ -4576,14 +4576,14 @@ const char *SSL_get_version(const SSL *s)
  * SSL_get_rtt retrieves the RTT value for a connection in microsoconds
  * These units NGINX's $tcpinfo_rtt variable (available through SSL module)
 */
-__owur long SSL_get_rtt(const SSL *s)
+__owur uint64_t SSL_get_handshake_rtt(const SSL *s)
 {
     const SSL_CONNECTION *sc = SSL_CONNECTION_FROM_CONST_SSL(s);
     
     if (sc == NULL)
         return 0;
 
-    return (long)ossl_time2us(sc->rtt);
+    return ossl_time2us(sc->handshake_rtt);
 }
 
 static int dup_ca_names(STACK_OF(X509_NAME) **dst, STACK_OF(X509_NAME) *src)

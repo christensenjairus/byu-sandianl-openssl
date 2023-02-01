@@ -562,17 +562,14 @@ static WRITE_TRAN ossl_statem_server13_write_transition(SSL_CONNECTION *s)
         else
             st->hand_state = TLS_ST_OK;
 
-        /*
-         * Use user_ssl so we can store this in the parent of quic connections?
-        */
-        s->rtt = ossl_time_abs_difference(ossl_time_now(), s->write_finished);
-        printf("READ FINISHED! %ld microseconds\n", (long)ossl_time2us(s->rtt));
+        s->handshake_rtt = ossl_time_abs_difference(ossl_time_now(), s->write_finished);
+        printf("READ FINISHED! %ld microseconds\n", (long)ossl_time2us(s->handshake_rtt));
         FILE *rttlogfile = fopen("/tmp/openssl_rtt.log\n", "a");
         if (rttlogfile == NULL)
             perror("Can't open rtt log file");
         else
         {
-            fprintf(rttlogfile, "RTT TIME: %ld microseconds\n", (long)ossl_time2us(s->rtt));
+            fprintf(rttlogfile, "RTT TIME: %ld microseconds\n", (long)ossl_time2us(s->handshake_rtt));
             fclose(rttlogfile);
         }
 
@@ -719,14 +716,14 @@ WRITE_TRAN ossl_statem_server_write_transition(SSL_CONNECTION *s)
             st->hand_state = TLS_ST_SW_CHANGE;
         }
 
-        s->rtt = ossl_time_abs_difference(ossl_time_now(), s->write_finished);
-        printf("READ FINISHED! %ld microseconds\n", (long)ossl_time2us(s->rtt));
+        s->handshake_rtt = ossl_time_abs_difference(ossl_time_now(), s->write_finished);
+        printf("READ FINISHED! %ld microseconds\n", (long)ossl_time2us(s->handshake_rtt));
         FILE *rttlogfile = fopen("/tmp/openssl_rtt.log", "a");
         if (rttlogfile == NULL)
             perror("Can't open rtt log file");
         else
         {
-            fprintf(rttlogfile, "RTT TIME: %ld microseconds\n", (long)ossl_time2us(s->rtt));
+            fprintf(rttlogfile, "RTT TIME: %ld microseconds\n", (long)ossl_time2us(s->handshake_rtt));
             fclose(rttlogfile);
         }
 

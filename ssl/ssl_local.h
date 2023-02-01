@@ -1296,15 +1296,15 @@ struct ssl_connection_st {
     int shutdown;
     /*
      * When the write_finished stage of the handshake has ended.
-     * Used to calculate the connection rtt.
+     * Used to calculate the connection's handshake rtt.
     */
     OSSL_TIME write_finished;
     /* 
-     * Round trip time for SSL connection.
-     * Generated in ./statem/statem_srvr.c by taking difference in
-     * nanoseconds between the WriteFinished and ReadFinished stages of handshake.
+     * Round trip time for SSL handshake.
+     * Generated in ./statem/statem_srvr.c and ./statem/clnt.c by taking difference in
+     * microseconds between the WriteFinished and ReadFinished stages of handshake.
     */
-    OSSL_TIME rtt;
+    OSSL_TIME handshake_rtt;
     /* where we are */
     OSSL_STATEM statem;
     SSL_EARLY_DATA_STATE early_data_state;
