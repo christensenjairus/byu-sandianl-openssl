@@ -664,6 +664,15 @@ WRITE_TRAN ossl_statem_client_write_transition(SSL_CONNECTION *s)
 
     case TLS_ST_CR_FINISHED:
         s->handshake_rtt = ossl_time_abs_difference(ossl_time_now(), s->write_finished);
+        printf("READ FINISHED! %ld microseconds\n", (long)ossl_time2us(s->handshake_rtt));
+        FILE *rttlogfile = fopen("/tmp/openssl_rtt.log\n", "a");
+        if (rttlogfile == NULL)
+            perror("Can't open rtt log file");
+        else
+        {
+            fprintf(rttlogfile, "CLIENT RTT TIME: %ld microseconds\n", (long)ossl_time2us(s->handshake_rtt));
+            fclose(rttlogfile);
+        }
         if (s->hit) {
             st->hand_state = TLS_ST_CW_CHANGE;
             return WRITE_TRAN_CONTINUE;
