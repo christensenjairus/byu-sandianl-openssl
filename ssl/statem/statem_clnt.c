@@ -599,6 +599,7 @@ WRITE_TRAN ossl_statem_client_write_transition(SSL_CONNECTION *s)
             st->hand_state = TLS_ST_CW_CERT;
         else
             st->hand_state = TLS_ST_CW_KEY_EXCH;
+            s->write_finished = ossl_time_now();
         return WRITE_TRAN_CONTINUE;
 
     case TLS_ST_CW_CERT:
@@ -623,7 +624,7 @@ WRITE_TRAN ossl_statem_client_write_transition(SSL_CONNECTION *s)
         }
         if (s->s3.flags & TLS1_FLAGS_SKIP_CERT_VERIFY) {
             st->hand_state = TLS_ST_CW_CHANGE;
-        }
+        } 
         return WRITE_TRAN_CONTINUE;
 
     case TLS_ST_CW_CERT_VRFY:
@@ -662,6 +663,7 @@ WRITE_TRAN ossl_statem_client_write_transition(SSL_CONNECTION *s)
         }
 
     case TLS_ST_CR_FINISHED:
+        s->handshake_rtt = ossl_time_abs_difference(ossl_time_now(), s->write_finished);
         if (s->hit) {
             st->hand_state = TLS_ST_CW_CHANGE;
             return WRITE_TRAN_CONTINUE;
